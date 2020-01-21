@@ -1,5 +1,5 @@
 <template lang="html">
-	<form id="sightings-form">
+	<form id="sightings-form" v-on:submit.prevent="addSighting">
 		<h2>Add a Sighting</h2>
 		<div class="formWrap">
 			<label for="species">Species:</label>
@@ -19,6 +19,9 @@
 </template>
 
 <script>
+
+import { eventBus } from '../main.js'
+
 export default {
 	name: "sightings-form",
 	data(){
@@ -29,7 +32,17 @@ export default {
 		}
 	},
 	methods: {
-
+		addSighting: function () {
+			const newSighting = {
+				species: this.species,
+				location: this.location,
+				date: this.date
+			}
+			eventBus.$emit('sighting-added', newSighting)
+			this.species = ""
+			this.location = ""
+			this.date = null
+		}
 	}
 }
 </script>
